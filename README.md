@@ -5,8 +5,10 @@ This code calculates the following for a simple non-linear cobweb model:
 3. Bifurcation Diagram
 4. Parameter Basins of Attraction (incomplete)
 
-This is inspired by Hommes (2013) and his lectures at university of
+The code is inspired by Hommes (2013) and his lectures at university of
 Amsterdam as well as the UvA CeNDEF software '*E&FChaos*'.
+
+I haven't added GUI to the code but I've done my best to make it easy to change parameters or the difference equation and play around. :) 
 
 __Sample Figures__
 
