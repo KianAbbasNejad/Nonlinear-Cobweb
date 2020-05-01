@@ -1,5 +1,5 @@
 # Nonlinear-Cobweb
-This code calculates the following for a simple non-linear cobweb model: 
+This script calculates the following for a simple non-linear cobweb model: 
 1. Iteration Loop
 2. Time Series 
 3. Bifurcation Diagram
