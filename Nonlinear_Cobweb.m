@@ -3,7 +3,7 @@
 % 1. Iteration Loop
 % 2. Time Series 
 % 3. Bifurcation Diagram
-% 4. Parameter Basins of Attraction (incomplete)
+% 4. Parameter Basins of Attraction 
 % This is inspired by Hommes (2013) and his lectures at university of
 % Amsterdam as well as the UvA CeNDEF software 'E&FChaos'. 
 % (Written by Kian Abbas Nejad)
@@ -34,10 +34,10 @@ d = 0;
 Pmin = -10;
 Pmax = 10;
 step = 0.01;
-n = 3; %number of iterations
-p0 = 4.75; %initial condition
+n = 1; %number of iterations
+p0 = -6; %initial condition
 p1 = p0; %vector for iteration loop
-num = 9; % number of iterations for plotting
+num = 5; % number of iterations for plotting
 P = Pmin:step:Pmax;
 I = P; % vector for iterations
 
@@ -72,8 +72,8 @@ for i=1:num
 end
 
 %% Time Series
-tmax = 100;
-trans = 50; %number of transient iterations not to plot
+tmax = 50;
+trans = 0; %number of transient iterations not to plot
 T = 1:tmax;
 P = zeros(tmax,1);
 
@@ -126,63 +126,66 @@ for k=1:length(w) % first loop iterates through parameter
 end
 
 
-%% Parameter Basins for Periodic Cycles (Incomplete)
-%{
-cycle_num = 3; %number of periodic cycles 
-cycles = 1:cycle_num;
-max_dist = 1000;  % maximum distance after which the point is classified as 'divergent'
+%% Color Map for Parameter Basins
+% Defining a colormap for up to 10 cycles
+% non-convergent(-1) = white    divergent(0) = black
+% steady-state  = red           2-cycle = blue
+% 3-cycle = yellow              4-cycle = orange
+% 5-cycle = gray                6-cycle = teal
+% 7-cycle = purple              8-cycle = olive
+% 9-cycle = green               10-cycle = brown
+cmap = [1 1 1; 0 0 0
+    1 0 0; 0 0 1
+    1 1 0; 1 0.5 0
+    0.5 0.5 0.5; 0 0.5 0.5
+    0.5 0 0.5 ; 0.5 0.5 0
+    0 0.5 0; 0.5 0.27 0.1];
+%% Parameter Basins for Periodic Cycles 
 
-Px_min = 0; %minimum value for x-axis parameter
+cycle_num = 7; %number of periodic cycles 
+contour_levels= -1:cycle_num; 
+max_dist = 1000;  % maximum distance after which the point is classified as 'divergent'
+tol = 3; %tolerance for number of periodic cycles
+p0 = 6; %initial condition
+tmax = 1000; %number of iterations
+trans = 700; %number of transient iterations
+
+Px_min = 0; %minimum value for x-axis parameter (here lambda)
 Px_max = 10;
 Py_min = 0.1;
 Py_max = 0.8;
-step = 0.001;
-
-tmax = 500; %number of iterations
-trans = 200; %number of transient iterations
-P = zeros(tmax,1);
-
-init_min = 2; % initial condition min
-init_max = 2; 
-init_step = 0.1;
-p0 = 4.8; %init_min:init_step:init_max;
-P(1)=p0; 
+step = 0.002;
 
 lambda = Px_min:step:Px_max; %lambda is x-axis param.
 w = Py_min:step:Py_max;
 
-% Defining a colormap for up to 10 cycles
-% white=non-convergent
-% black = divergen
-% red = steady-state
-% 2-cycle = blue
-cmap = [1 1 1; 0 0 0; 1 0 0; 0 0 1];
-
-%Redefine the map in terms of the parameter: 
-fp = @(p,L,W) (1-W).*p + W.*(a-d-atan(L.*(p-c)))./b;
+%Redefine the function in terms of the parameter: 
+Fp = @(p,L,W) (1-W).*p + W.*(a-d-atan(L.*(p-c)))./b;
 
 [PX, PY]=meshgrid(lambda, w);
-Basin = ones(numel(w),numel(lambda)); %Parameter basin matrix
-
+Basin = -ones(numel(w),numel(lambda)); %Parameter basin matrix. -1 is non convergent
 
 for i=1:numel(PX)
-    for i=2:tmax %same as before
-        pp = P(i-1);
-        P(i)=fp(pp,PX(i),PY(i));
-        if P(i) - p0 > max_dist %break if divergent
-            Basin(i) = -1; %-1 is color code for divergent
-            break
-        end
+    P = [p0; zeros(tmax,1)];
+    for j=2:tmax %same as before
+        pp = P(j-1);
+        P(j)=Fp(pp,PX(i),PY(i));
     end  
+    P=round(P,tol); %rounding using the tolerance level
     C = numel(unique(P(trans:tmax))); 
-    if C <= cycle_num
+    if (P(end) - P(1)) > max_dist % if divergent
+        Basin(i) = 0; %0 is color code for divergent
+    elseif C <= cycle_num
         Basin(i)= C;
-    else
-        Basin(i) = -2; % -2 is code for non-convergent
-    end
+    end 
 end
-
 fig4= figure(4);
-[M,c]=contourf(lambda,w,Basin);
-colormap(cmap);
-%}
+hold on
+[M,c]=contourf(lambda,w,Basin,contour_levels);
+cmap = cmap(1:cycle_num+2,:);
+colormap(cmap)
+fig2.Name = 'Basin_of_Attraction';
+title('Parameter Basin of Attraction','FontSize',14,'interpreter','latex');
+ylabel('$w$','FontSize',14,'interpreter','latex');
+xlabel('$\lambda$','FontSize',14,'interpreter','latex');
+
