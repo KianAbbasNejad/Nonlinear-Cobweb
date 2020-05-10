@@ -8,7 +8,7 @@ This script calculates the following for a simple non-linear cobweb model:
 The code is inspired by Hommes (2013) and his lectures at university of
 Amsterdam as well as the UvA CeNDEF software '*E&FChaos*'.
 
-The code doesn't have GUI, but I've tried my best to make it easy to change the difference equation or the parameters and play around with the graphs. :) 
+The code doesn't have GUI, but I've tried my best to make it easy to change the equations/parameters and play around with the graphs. :) 
 
 __Sample Figures__
 
