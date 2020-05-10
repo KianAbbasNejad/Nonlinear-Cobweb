@@ -1,4 +1,4 @@
-# Nonlinear-Cobweb
+# Nonlinear Dynamics in a Cobweb Model
 This script calculates the following for a simple non-linear cobweb model: 
 1. Iteration Loop
 2. Time Series 
