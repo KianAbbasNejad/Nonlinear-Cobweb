@@ -93,7 +93,7 @@ xlabel('$t$','FontSize',16,'interpreter','latex');
 title('Time Series of $p_t$','FontSize',14,'interpreter','latex');
 
 %% Bifurcation Diagram
-
+%{
 pmin = 0.2; %parameter minimum
 pmax = 0.9; %parameter max
 pstep = 0.001; %parameter step size
@@ -124,7 +124,7 @@ for k=1:length(w) % first loop iterates through parameter
     B = ones(1,tmax-trans)*w(k);
     scatter(B,P(trans+1:tmax),0.03,'k');
 end
-
+%}
 
 %% Color Map for Parameter Basins
 % Defining a colormap for up to 10 cycles
@@ -140,12 +140,15 @@ cmap = [1 1 1; 0 0 0
     0.5 0.5 0.5; 0 0.5 0.5
     0.5 0 0.5 ; 0.5 0.5 0
     0 0.5 0; 0.5 0.27 0.1];
+% labels for legend:
+labels = {'Non-convergent','divergent','steady-state','2-cycle','4-cycle',...
+    '5-cycle','6-cycle','7-cycle','8-cycle','9-cycle','10-cycle'};
 %% Parameter Basins for Periodic Cycles 
 
 cycle_num = 7; %number of periodic cycles 
 contour_levels= -1:cycle_num; 
 max_dist = 1000;  % maximum distance after which the point is classified as 'divergent'
-tol = 3; %tolerance for number of periodic cycles
+tol = 3; %rounding tolerance '1e-tol' for number of periodic cycles
 p0 = 6; %initial condition
 tmax = 1000; %number of iterations
 trans = 700; %number of transient iterations
@@ -189,3 +192,10 @@ title('Parameter Basin of Attraction','FontSize',14,'interpreter','latex');
 ylabel('$w$','FontSize',14,'interpreter','latex');
 xlabel('$\lambda$','FontSize',14,'interpreter','latex');
 
+% Creating Legend
+h = zeros(cycle_num+2,1);
+for i=1:cycle_num+2
+    h(i) = plot(NaN,NaN,'o','Color',cmap(i,:));
+end
+lgd = legend(h, labels(1:cycle_num+2),'Location','southoutside','interpreter','latex');
+lgd.NumColumns = 4;
