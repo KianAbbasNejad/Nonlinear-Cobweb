@@ -5,7 +5,7 @@ This script calculates the following for a simple non-linear cobweb model:
 3. Bifurcation Diagram
 4. Parameter Basins of Attraction 
 
-The code is inspired by Hommes (2013) and his lectures at university of
+The code is inspired by Hommes (2013) and his lectures at University of
 Amsterdam as well as the UvA CeNDEF software '*E&FChaos*'.
 
 The code doesn't have GUI, but I've tried my best to make it easy to change the equations/parameters and play around with the graphs. :) 
