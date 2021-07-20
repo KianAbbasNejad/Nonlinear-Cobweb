@@ -3,7 +3,7 @@ This script calculates the following for a simple non-linear cobweb model:
 1. Iteration Loop
 2. Time Series 
 3. Bifurcation Diagram
-4. Parameter Basins of Attraction - creates a meshgrid of parameter space, given an initial condition creates a time series of that initial condition on each point in the meshgrid, and calculates its period given a tolerance level. 
+4. Parameter Basin of Attraction - creates a meshgrid of parameter space, given an initial condition creates a time series of that initial condition on each point in the meshgrid, and calculates its period given a tolerance level. 
 
 The code is inspired by Hommes (2013) and his lectures at University of
 Amsterdam as well as the UvA CeNDEF software '*E&FChaos*'.
